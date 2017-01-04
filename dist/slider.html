@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>A Basic Slider</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="slider.css">
+    <style>
+        html {
+            font-family: Helvetica, sans-serif;
+        }
+
+        body {
+            align-items: center;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        main {
+            max-width: 980px;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <div id="js-slider" class="c-slider">
+        <div id="sitters-list" class="c-slider__frame">
+            <ul class="c-slider__slides">
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=1">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=2">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=3">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=4">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=5">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=6">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=7">
+                </li>
+                <li class="c-slider__slide">
+                    <img class="c-slider__img" src="http://loremflickr.com/200/200?random=8">
+                </li>
+            </ul>
+        </div>
+        <ul class="c-slider__nav">
+            <li class="c-slider__nav-previous">
+                <div class="c-slider__button c-slider__button--prev js-slider__button--prev">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </div>
+            </li>
+            <li class="c-slider__nav-next">
+                <div class="c-slider__button c-slider__button--next js-slider__button--next">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</main>
+<script src="slider.js"></script>
+<script>
+  window.addEventListener('load', function (ev) {
+    var slider = new Slider('#js-slider', {
+      autoSlide: 1, // When 1, turns auto slide mode on. Otherwise this functionality is off
+      delayBetweenSlides: 5000, // Delay between slides in milliseconds. Default = 5000, or 5 seconds
+      rate: 0.5, // The time in seconds for the slide it takes to complete the slide. Default = 0.5s
+    });
+  });
+</script>
+</body>
+</html>
