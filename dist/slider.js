@@ -7,8 +7,8 @@
  * @param {!object} selector
  * @param {?object} args
  * @param {number} [args.rate=0.5] - The time in seconds for the slide it takes to slide.
- * @param {boolean} [args.autoSlide=true]
- * @param {number} [args.delayBetweenSlides=5000} - Delay between slides in millie seconds
+ * @param {number} [args.autoSlide=false] - When 1, turns auto slide mode on. Otherwise this functionality is off.
+ * @param {number} [args.delayBetweenSlides=5000} - Delay between slides in milliseconds.
  * @author Johan Meester <walter.doodah@gmail.com>
  * @licence MIT - http://opensource.org/licenses/MIT
  * @copyright Johan Meester 2017
@@ -127,7 +127,6 @@
       var keyframesRule = root.CSSRule.KEYFRAMES_RULE || root.CSSRule.MOZ_KEYFRAMES_RULE || root.CSSRule.WEBKIT_KEYFRAMES_RULE;
 
       for (var i = 0; i < styleSheets.length; ++i) {
-        console.log('styleSheet: ', styleSheets[i]);
         if (styleSheets[i].cssRules) {
           for (var j = 0, l = styleSheets[i].cssRules.length; j < l; ++j) {
             if (styleSheets[i].cssRules[j].type === keyframesRule && styleSheets[i].cssRules[j].name === rule) {
