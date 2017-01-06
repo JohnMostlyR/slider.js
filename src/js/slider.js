@@ -276,23 +276,24 @@
         }
 
         // Make all slides the same height based on the highest slide
-        slideList.forEach((s) => {
-          s.style.removeProperty('height');
-        });
+        for (let i = 0, l = slideList.length; i < l; i++) {
+          slideList[i].style.removeProperty('height');
+        }
 
         const heights = [];
 
-        slideList.forEach((s) => {
-          heights.push(parseInt(root.getComputedStyle(s).height, 10));
-        });
+        // MS Edge does not support forEach on NodeList
+        for (let i = 0, l = slideList.length; i < l; i++) {
+          heights.push(parseInt(root.getComputedStyle(slideList[i]).height, 10));
+        }
 
         const minHeight = Math.min.apply(Math, heights);
         const maxHeight = Math.max.apply(Math, heights);
 
         if (minHeight !== maxHeight) {
-          slideList.forEach((s) => {
-            s.style.height = `${maxHeight}px`;
-          });
+          for (let i = 0, l = slideList.length; i < l; i++) {
+            slideList[i].style.height = `${maxHeight}px`;
+          }
         }
       } catch (e) {
         console.error(e.message);
@@ -340,20 +341,6 @@
      */
     this.getSlidedSlidesCount = () => {
       return slidedSlidesCount;
-    };
-
-    /**
-     * @method start - Starts the slider
-     */
-    this.start = () => {
-      if (!started) {
-        init();
-        updateButtonState();
-      }
-
-      started = true;
-
-      if (autoSlide) startAutoSlide();
     };
 
     // Adding event listeners
