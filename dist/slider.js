@@ -253,43 +253,42 @@
     /** @function calculate - Calculate the values for: maxVisibleSlides, spareSlidesCount and offset */
     function calculate() {
       try {
-        (function () {
-          slider.style.removeProperty('max-width');
-          slideWidth = parseInt(root.getComputedStyle(slideList[0]).width, 10);
-          frameWidth = parseInt(root.getComputedStyle(frame).width, 10);
+        slider.style.removeProperty('max-width');
+        slideWidth = parseInt(root.getComputedStyle(slideList[0]).width, 10);
+        frameWidth = parseInt(root.getComputedStyle(frame).width, 10);
 
-          maxVisibleSlides = frameWidth / slideWidth;
-          spareSlidesCount = numberOfSlides - maxVisibleSlides;
+        maxVisibleSlides = frameWidth / slideWidth;
+        spareSlidesCount = numberOfSlides - maxVisibleSlides;
 
-          // We do not want to show partially visible slides, so we adjust the with of the slider downwards
-          offset = frameWidth % slideWidth;
+        // We do not want to show partially visible slides, so we adjust the with of the slider downwards
+        offset = frameWidth % slideWidth;
 
-          if (offset) {
-            frameWidth -= offset;
-            var totalButtonsWidth = parseInt(root.getComputedStyle(buttonPrevious).width, 10) * 2;
-            slider.style.maxWidth = frameWidth + totalButtonsWidth + 'px';
+        if (offset) {
+          frameWidth -= offset;
+          var totalButtonsWidth = parseInt(root.getComputedStyle(buttonPrevious).width, 10) * 2;
+          slider.style.maxWidth = frameWidth + totalButtonsWidth + 'px';
+        }
+
+        // Make all slides the same height based on the highest slide
+        for (var i = 0, l = slideList.length; i < l; i++) {
+          slideList[i].style.removeProperty('height');
+        }
+
+        var heights = [];
+
+        // MS Edge does not support forEach on NodeList
+        for (var _i = 0, _l = slideList.length; _i < _l; _i++) {
+          heights.push(parseInt(root.getComputedStyle(slideList[_i]).height, 10));
+        }
+
+        var minHeight = Math.min.apply(Math, heights);
+        var maxHeight = Math.max.apply(Math, heights);
+
+        if (minHeight !== maxHeight) {
+          for (var _i2 = 0, _l2 = slideList.length; _i2 < _l2; _i2++) {
+            slideList[_i2].style.height = maxHeight + 'px';
           }
-
-          // Make all slides the same height based on the highest slide
-          slideList.forEach(function (s) {
-            s.style.removeProperty('height');
-          });
-
-          var heights = [];
-
-          slideList.forEach(function (s) {
-            heights.push(parseInt(root.getComputedStyle(s).height, 10));
-          });
-
-          var minHeight = Math.min.apply(Math, heights);
-          var maxHeight = Math.max.apply(Math, heights);
-
-          if (minHeight !== maxHeight) {
-            slideList.forEach(function (s) {
-              s.style.height = maxHeight + 'px';
-            });
-          }
-        })();
+        }
       } catch (e) {
         console.error(e.message);
       }
@@ -336,20 +335,6 @@
      */
     this.getSlidedSlidesCount = function () {
       return slidedSlidesCount;
-    };
-
-    /**
-     * @method start - Starts the slider
-     */
-    this.start = function () {
-      if (!started) {
-        init();
-        updateButtonState();
-      }
-
-      started = true;
-
-      if (autoSlide) startAutoSlide();
     };
 
     // Adding event listeners

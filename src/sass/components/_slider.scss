@@ -1,5 +1,11 @@
-$slide-width: 200px;
-$button-width: 30px;
+$nav-btn-bg-color: #f15c6f;
+$nav-btn-icon-color: white;
+$nav-btn-icon-size: 1rem;
+$nav-btn-width: 30px;
+$image-height: 200px;
+$image-width: 301px;
+$slide-height: auto;
+$slide-width: $image-width;
 
 .c-slider {
   margin: 0 auto;
@@ -7,46 +13,55 @@ $button-width: 30px;
 
   &__button {
     align-items: center;
-    background-color: crimson;
+    background-color: $nav-btn-bg-color;
+    border: 0;
     bottom: 0;
-    color: white;
+    color: $nav-btn-icon-color;
     display: flex;
     justify-content: center;
     position: absolute;
     top: 0;
-    width: $button-width;
+    width: $nav-btn-width;
     z-index: 10;
 
     &:hover {
-      background-color: darken(crimson, 10%);
+      background-color: darken(#f15c6f, 10%);
     }
 
     &--disabled {
-      background-color: desaturate(crimson, 100%);
+      background-color: desaturate(#f15c6f, 100%);
 
       &:hover {
-        background-color: desaturate(darken(crimson, 10%), 100%);
+        background-color: desaturate(darken(#f15c6f, 10%), 100%);
       }
     }
 
     &--next {
+      background-image: svg-url('<?xml version="1.0" encoding="utf-8"?> <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve"> <path fill="#{$nav-btn-icon-color}" d="M27.9,100.4c-5.8,5.8-5.7,15.3,0.5,20.9c5.8,5.3,14.8,4.8,20.3-0.8l47.3-47.3c2.8-2.8,4.2-6.5,4.2-10.2s-1.4-7.4-4.2-10.2 L48.8,5.5c-5.5-5.5-14.6-6.1-20.3-0.8c-6.1,5.6-6.3,15.1-0.5,20.9L58.2,56c3.9,3.9,3.9,10.2,0,14.1L27.9,100.4z"/> </svg>');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: $nav-btn-icon-size auto;
       right: 0;
     }
 
     &--previous {
+      background-image: svg-url('<?xml version="1.0" encoding="utf-8"?> <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve"> <path fill="#{$nav-btn-icon-color}" d="M96.1,25.6c5.8-5.8,5.7-15.3-0.5-20.9c-5.8-5.3-14.8-4.8-20.3,0.8L27.9,52.8c-2.8,2.8-4.2,6.5-4.2,10.2s1.4,7.4,4.2,10.2 l47.3,47.3c5.5,5.5,14.6,6.1,20.3,0.8c6.1-5.6,6.3-15.1,0.5-20.9L65.8,70.1c-3.9-3.9-3.9-10.2,0-14.1L96.1,25.6z"/> </svg>');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: $nav-btn-icon-size auto;
       left: 0;
     }
   }
 
   &__frame {
-    margin: 0 $button-width;
+    margin: 0 $nav-btn-width;
     overflow: hidden;
     position: relative;
   }
 
   &__img {
-    height: 200px;
-    width: 200px;
+    height: $image-height;
+    width: $image-width;
   }
 
   &__nav {
@@ -56,7 +71,7 @@ $button-width: 30px;
   &__slide {
     display: block;
     float: left;
-    height: $slide-width;
+    height: $slide-height;
     width: $slide-width;
   }
 
