@@ -8,19 +8,23 @@ $slide-height: auto;
 $slide-width: $image-width;
 
 .c-slider {
+  display: block;
   margin: 0 auto;
   position: relative;
 
   &__button {
     align-items: center;
+    appearance: none;
     background-color: $nav-btn-bg-color;
     border: 0;
     bottom: 0;
     color: $nav-btn-icon-color;
     display: flex;
     justify-content: center;
+    outline: none;
     position: absolute;
     top: 0;
+	transition: background-color 150ms ease-in-out;
     width: $nav-btn-width;
     z-index: 10;
 

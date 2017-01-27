@@ -29,7 +29,6 @@
     let buttonPrevious = null;
     let frame = null;
     let frameWidth = 0;
-    let keyFrameRules = null;
     let maxVisibleSlides = 0;
     let newMargin = 0;
     let numberOfSlides = 0;
@@ -50,12 +49,12 @@
      * @param {!number} delay - Delay in seconds before the animation starts.
      */
     function slideOneSlide(newPosition, delay) {
-      keyFrameRules.appendRule(`100% {margin-left: ${newPosition}px;}`, 0);
-
-      slides.style.animationName = 'slideOneSlide';
-      slides.style.animationDuration = `${rate}s`;
-      slides.style.animationDelay = `${delay}s`;
       slides.style.transform = 'translateZ(0)';
+      slides.style.webkitTransition = `margin ${rate}s linear ${delay}s`;
+      slides.style.transition = `margin ${rate}s linear ${delay}s`;
+
+      slidingBusy = true;
+      slides.style.marginLeft = `${newPosition}px`;
     }
 
     /** @function rewind - Sets the slider back into the starting position */
@@ -96,7 +95,7 @@
       slideOneSlide(newMargin, delay);
     }
 
-    const prefix = ['webkit', 'moz', 'MS', 'o', ''];
+    const prefix = ['webkit', ''];
 
     /**
      * @function PrefixedEvent
@@ -112,31 +111,6 @@
         }
         element.addEventListener(prefix[p] + type, callback, false);
       }
-    }
-
-    /**
-     * @function findKeyFrameRules
-     * @param {string} rule - The name of the keyframe rule to find.
-     * @returns {object|null}
-     */
-    function findKeyFrameRules(rule) {
-      const styleSheets = DOC.styleSheets;
-      const keyframesRule = root.CSSRule.KEYFRAMES_RULE
-        || root.CSSRule.MOZ_KEYFRAMES_RULE
-        || root.CSSRule.WEBKIT_KEYFRAMES_RULE;
-
-      for (let i = 0; i < styleSheets.length; ++i) {
-        if (styleSheets[i].cssRules) {
-          for (let j = 0, l = styleSheets[i].cssRules.length; j < l; ++j) {
-            if (styleSheets[i].cssRules[j].type === keyframesRule
-              && styleSheets[i].cssRules[j].name === rule) {
-              return styleSheets[i].cssRules[j];
-            }
-          }
-        }
-      }
-
-      return null;
     }
 
     /**
@@ -176,16 +150,10 @@
     /**
      * @callback handleAnimationEvents - Handler for CSS animation events.
      * @param {object} ev - The event object.
-     * @listens document:animationstart
-     * @listens document:animationend
+     * @listens document:transitionend
      */
     function handleAnimationEvents(ev) {
       const eventType = ev.type.toLowerCase();
-
-      // Set slidingBusy state to true when the animation has started.
-      if (eventType.indexOf('animationstart') >= 0) {
-        slidingBusy = true;
-      }
 
       /**
        * When the animation has ended:
@@ -194,7 +162,7 @@
        * update the left and right button state,
        * set slidingBusy state to false.
        */
-      if (eventType.indexOf('animationend') >= 0) {
+      if (eventType === 'transitionend') {
         if (slidedSlidesCount) {
           slides.style.marginLeft = `${newMargin}px`;
         } else {
@@ -202,16 +170,12 @@
         }
 
         [
-          'animation-name',
-          'animation-duration',
-          'animation-iteration-count',
-          'animation-delay',
+          'webkitTransition',
+          'transition',
           'transform'
         ].forEach(property => {
           slides.style.removeProperty(property);
         });
-
-        keyFrameRules.deleteRule('100%');
 
         updateButtonState();
 
@@ -263,8 +227,8 @@
         slideWidth = parseInt(root.getComputedStyle(slideList[0]).width, 10);
         frameWidth = parseInt(root.getComputedStyle(frame).width, 10);
 
-        maxVisibleSlides = frameWidth / slideWidth;
-        spareSlidesCount = numberOfSlides - maxVisibleSlides;
+        maxVisibleSlides = Math.floor(frameWidth / slideWidth);
+        spareSlidesCount = Math.floor(numberOfSlides - maxVisibleSlides);
 
         // We do not want to show partially visible slides, so we adjust the with of the slider downwards
         offset = frameWidth % slideWidth;
@@ -312,12 +276,8 @@
 
         calculate();
 
-        keyFrameRules = findKeyFrameRules('slideOneSlide');
-
         // Animation events listeners
-        PrefixedEvent(slides, 'AnimationStart', handleAnimationEvents);
-        PrefixedEvent(slides, 'AnimationIteration', handleAnimationEvents);
-        PrefixedEvent(slides, 'AnimationEnd', handleAnimationEvents);
+        PrefixedEvent(slides, 'transitionend', handleAnimationEvents);
 
         // Touch event listeners
         frame.addEventListener('touchstart', handleTouchEvents, false);
