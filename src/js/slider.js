@@ -27,6 +27,7 @@
     let autoSlideTimerId = 0;
     let buttonNext = null;
     let buttonPrevious = null;
+    let controlsPresent = false;
     let frame = null;
     let frameWidth = 0;
     let maxVisibleSlides = 0;
@@ -235,7 +236,12 @@
 
         if (offset) {
           frameWidth -= offset;
-          const totalButtonsWidth = parseInt(root.getComputedStyle(buttonPrevious).width, 10) * 2;
+          let totalButtonsWidth = 0;
+
+          if (controlsPresent) {
+            totalButtonsWidth = parseInt(root.getComputedStyle(buttonPrevious).width, 10) * 2;
+          }
+
           slider.style.maxWidth = `${frameWidth + totalButtonsWidth}px`;
         }
 
@@ -274,18 +280,34 @@
         buttonPrevious = slider.querySelector('.js-slider__button--prev');
         buttonNext = slider.querySelector('.js-slider__button--next');
 
+        controlsPresent = !!(buttonPrevious && buttonNext);
+
         calculate();
 
         // Animation events listeners
         PrefixedEvent(slides, 'transitionend', handleAnimationEvents);
 
         // Touch event listeners
-        frame.addEventListener('touchstart', handleTouchEvents, false);
-        frame.addEventListener('touchend', handleTouchEvents, false);
-        frame.addEventListener('touchmove', handleTouchEvents, false);
-        frame.addEventListener('touchcancel', handleTouchEvents, false);
+        if (controlsPresent) {
+          frame.addEventListener('touchstart', handleTouchEvents, false);
+          frame.addEventListener('touchend', handleTouchEvents, false);
+          frame.addEventListener('touchmove', handleTouchEvents, false);
+          frame.addEventListener('touchcancel', handleTouchEvents, false);
 
-        updateButtonState();
+          // Listen for mouse clicks on prev/next buttons
+          root.addEventListener('click', ev => {
+            if (ev.target && ev.target.classList.contains('js-slider__button--next')) {
+              autoSlideManualOverride = true;
+              slide('left');
+            } else if (ev.target && ev.target.classList.contains('js-slider__button--prev')) {
+              autoSlideManualOverride = true;
+              slide('right');
+            }
+          });
+
+          updateButtonState();
+        }
+
 
         if (autoSlide) startAutoSlide();
       } catch (e) {
@@ -304,18 +326,6 @@
     };
 
     // Adding event listeners
-
-    // Listen for mouse clicks on prev/next buttons
-    root.addEventListener('click', ev => {
-      if (ev.target && ev.target.classList.contains('js-slider__button--next')) {
-        autoSlideManualOverride = true;
-        slide('left');
-      } else if (ev.target && ev.target.classList.contains('js-slider__button--prev')) {
-        autoSlideManualOverride = true;
-        slide('right');
-      }
-    });
-
     root.addEventListener('resize', ev => {
       calculate();
     });

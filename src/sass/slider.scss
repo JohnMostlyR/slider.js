@@ -1,4 +1,6 @@
 // SETTINGS
+@import 'settings/variables';
+@import 'settings/demo';
 
 // TOOLS
 @import 'tools/svg-url';
@@ -6,11 +8,6 @@
 // GENERIC
 @import 'generic/box-sizing';
 
-// ELEMENTS
-
-// OBJECTS
-
 // COMPONENTS
-@import 'components/slider';
-
-// UTILITIES
+@import 'components/base';
+@import 'components/demo';
