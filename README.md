@@ -1,4 +1,6 @@
 # Slider
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Mensae/slider.js.svg)](https://greenkeeper.io/)
 A basic slider with 0 dependencies
 
 # Demo
