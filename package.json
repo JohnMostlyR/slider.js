@@ -13,16 +13,16 @@
     "sass"
   ],
   "devDependencies": {
-    "autoprefixer": "^6.4.0",
+    "autoprefixer": "^7.2.4",
     "babel-core": "^6.18.2",
     "babel-preset-es2015": "^6.18.0",
     "grunt": "^1.0.1",
-    "grunt-babel": "^6.0.0",
-    "grunt-postcss": "^0.8.0",
-    "grunt-sass": "^1.2.0"
+    "grunt-babel": "^7.0.0",
+    "grunt-postcss": "^0.9.0",
+    "grunt-sass": "^2.0.0"
   },
   "dependencies": {
-    "pixrem": "^3.0.2"
+    "pixrem": "^4.0.1"
   },
   "directories": {
     "test": "test"
